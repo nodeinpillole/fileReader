@@ -2,6 +2,7 @@ var http = require('http')
   , path = require('path') //libreria per manipolare i path
   , url = require('url') // libreria per manipolare l'url
   , fs = require('fs')
+  , mime = require('mime')
   , publicdir = './public'
   ;
 
@@ -20,7 +21,7 @@ http.createServer(function (req, res) {
         res.writeHead(200, {'Content-type':'text/plain'});
         res.end(err.message);
       } else {
-        res.writeHead(200, {'Content-type': 'text/plain'});
+        res.writeHead(200, {'Content-type': mime.lookup(filepath)});
         res.end(data);
       }
     });
