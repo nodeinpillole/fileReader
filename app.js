@@ -1,6 +1,7 @@
 var http = require('http')
   , path = require('path') //libreria per manipolare i path
   , url = require('url') // libreria per manipolare l'url
+  , fs = require('fs')
   , publicdir = './public'
   ;
 
@@ -14,8 +15,15 @@ http.createServer(function (req, res) {
   //se il file specificato esiste rispondo con un messaggio
   //altrimenti ritorno un 404 NOT FOUND
   if (path.existsSync(filepath)) {
-    res.writeHead(200, {'Content-type': 'text/plain'});
-    res.end(filepath + ' ESISTE');
+    fs.readFile(filepath, function(err, data) {
+      if (err) {
+        res.writeHead(200, {'Content-type':'text/plain'});
+        res.end(err.message);
+      } else {
+        res.writeHead(200, {'Content-type': 'text/plain'});
+        res.end(data);
+      }
+    });
   } else {
     res.writeHead(404, {'Content-type':'text/plain'});
     res.end('NOT FOUND');
